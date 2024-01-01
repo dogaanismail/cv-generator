@@ -1,0 +1,168 @@
+{% extends 'CV_gen/base.html' %}
+{% load static %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 mt-5">
+                <div class="list-group" id="side-list">
+                    <li class="list-group-item active text-decoration-none">General Information</li>
+                    <li class="list-group-item text-decoration-none">Education</li>
+                    <li class="list-group-item text-decoration-none">Work Experience</li>
+                    <li class="list-group-item text-decoration-none">Skills</li>
+                    <li class="list-group-item text-decoration-none">Interests</li>
+                    <button type="submit" form="cv_form" class="btn btn-success mt-3 mb-3" onClick="sendData()">Create
+                        CV
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-9 ml-0">
+                <div class="border rounded mt-5 mb-5 p-4" style="background-color: #f8f9fa;">
+                    <form method="POST" class="container" id="cv_form">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p onclick="prevStep()">&#8592; Previous</p>
+                            <p onclick="nextStep()">Next &#8594;</p>
+
+                        </div>
+                        {% csrf_token %}
+                        <div id="step1" class="step">
+                            <h2>General Information</h2>
+                            <div class="row">
+                                <div class="col">
+                                    {{ cv_data_form.first_name.label }}
+                                    {{ cv_data_form.first_name }}
+                                </div>
+                                <div class="col">
+                                    {{ cv_data_form.last_name.label }}
+                                    {{ cv_data_form.last_name }}
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    {{ cv_data_form.phone.label }}
+                                    {{ cv_data_form.phone }}
+                                </div>
+                                <div class="col">
+                                    {{ cv_data_form.email.label }}
+                                    {{ cv_data_form.email }}
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    {{ cv_data_form.about_yourself.label }}
+                                    {{ cv_data_form.about_yourself }}
+                                </div>
+                            </div>
+                        </div>
+                        <div id="step2" class="step" style="display: none;">
+                            <h2>Work Experience</h2>
+                            <div class="row">
+                                <div class="col">
+                                    {{ cv_data_form.job_title.label }}
+                                    {{ cv_data_form.job_title }}
+                                </div>
+                                <div class="col">
+                                    {{ cv_data_form.company_name.label }}
+                                    {{ cv_data_form.company_name }}
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    {{ cv_data_form.start_date.label }}
+                                    {{ cv_data_form.start_date }}
+                                </div>
+                                <div class="col">
+                                    {{ cv_data_form.end_date.label }}
+                                    {{ cv_data_form.end_date }}
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    {{ cv_data_form.other_information.label }}
+                                    {{ cv_data_form.other_information }}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn btn-outline-secondary mt-3"
+                                        onClick="addWorkExperience()">Add Work Experience
+                                </button>
+                            </div>
+                            <div class="card mt-3" style="width: 100%;">
+                                <ul id="work_exp_list" class="list-group list-group-flush">
+                                    <!-- TO DISPLAY ADDED WORK EXPERIENCE -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="step3" class="step" style="display: none;">
+                            <h2>Education</h2>
+                            <div class="row">
+                                <div class="col">
+                                    {{ cv_data_form.university.label }}
+                                    {{ cv_data_form.university }}
+                                </div>
+                                <div class="col">
+                                    {{ cv_data_form.degree.label }}
+                                    {{ cv_data_form.degree }}
+                                </div>
+                                <div class="col">
+                                    {{ cv_data_form.gpa.label }}
+                                    {{ cv_data_form.gpa }}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn btn-outline-secondary mt-3" onClick="addEducation()">
+                                    Add Education
+                                </button>
+                            </div>
+                            <div class="card mt-3" style="width: 100%;">
+                                <ul id="edu_list" class="list-group list-group-flush">
+                                    <!-- TO DISPLAY ADDED EDUCATION -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div id="step4" class="step" style="display: none;">
+                            <h2>Skills</h2>
+                            <div class="row">
+                                <div class="col">
+                                    {{ cv_data_form.skills.label }}
+                                    {{ cv_data_form.skills }}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn btn-outline-secondary mt-3" onClick="addSkills()">Add
+                                    Skills
+                                </button>
+                            </div>
+                            <div class="card mt-3" style="width: fit-content;">
+                                <div id="skills_list" class="list-group list-group-horizontal flex-wrap">
+                                    <!-- TO DISPLAY ADDED SKILLS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step5" class="step" style="display: none;">
+                            <h2>Interests</h2>
+                            <div class="row">
+                                <div class="col">
+                                    {{ cv_data_form.interest.label }}
+                                    {{ cv_data_form.interest }}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn btn-outline-secondary mt-3" onClick="addInterests()">
+                                    Add Interests
+                                </button>
+                            </div>
+                            <div class="card mt-3" style="width: fit-content;">
+                                <div id="interest_list" class="d-flex flex-wrap">
+                                    <!-- TO DISPLAY ADDED INTERESTS -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'index.js' %}"></script>
+{% endblock %}

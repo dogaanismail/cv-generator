@@ -1,0 +1,24 @@
+{% extends 'CV_gen/base.html' %}
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center m-5">
+            <div class="col-md-8">
+                <h2 class="text-center">CV List</h2>
+            </div>
+        </div>
+        {% for name in cv_data %}
+            <div class="card mb-3 mx-auto" style="max-width: 600px;">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-9">
+                            <h4>{{ name.first_name }} {{ name.last_name }}</h4>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <a href="{% url 'cv_down' name.id %}" class="btn btn-primary">Download CV</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
